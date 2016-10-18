@@ -46,6 +46,19 @@ public class MainActivity extends AppCompatActivity {
             return numPages;
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        //Am I in the 1st page, then exit..
+        if (mPager.getCurrentItem() == 0) {
+            super.onBackPressed();
+        }
+        else {
+            //if I am not 1st page, then go back to the previous page. when back button is pressed
+            mPager.setCurrentItem(mPager.getCurrentItem()-1);
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
