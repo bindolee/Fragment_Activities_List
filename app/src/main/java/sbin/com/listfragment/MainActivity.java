@@ -1,14 +1,18 @@
 package sbin.com.listfragment;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -23,10 +27,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mPager = (ViewPager) findViewById(R.id.pager);
-        PagerAdapter pagerAdapter =
-                new ViewPagerAdapter(getSupportFragmentManager());
-        mPager.setAdapter(pagerAdapter);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
     }
 
     private class ViewPagerAdapter extends FragmentStatePagerAdapter {
@@ -73,11 +75,32 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch(id){
+            case R.id.action_settings:
+                onSettingsClick();
+                break;
+            case R.id.actiontest_pref:
+                onTestPrefClick();
+                break;
+            default:
+                break;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onSettingsClick() {
+        Intent intent = new Intent(this, MyPreferencesActivity.class);
+        startActivity(intent);
+    }
+
+    public void onTestPrefClick() {
+        SharedPreferences preferences =
+                PreferenceManager.getDefaultSharedPreferences(this);
+        String usrName = preferences.getString("username", "not defined");
+        Toast.makeText(MainActivity.this,"User name: " + usrName,
+                Toast.LENGTH_LONG).show();
     }
 }
